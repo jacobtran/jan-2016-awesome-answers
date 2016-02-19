@@ -8,6 +8,8 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+
+<!-- navigation   -->
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -70,6 +72,7 @@
 
 <%#= flash[:notice] || flash[:alert] %>
 
+<!-- notice and alerts -->
 <% if notice %>
   <div class="alert alert-success alert-dismissible">
     <strong><%= notice %></strong>
@@ -83,9 +86,7 @@
 <% end %>
 <%#= notice || alert %>
 
-<!-- <div class="container"> -->
 <%= yield %>
-<!-- </div> -->
 
 </body>
 </html>
