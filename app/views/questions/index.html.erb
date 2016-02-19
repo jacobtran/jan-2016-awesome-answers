@@ -1,0 +1,18 @@
+<div class="jumbotron text-center bg-grey">
+  <h1>All Questions (<%= @questions.length %>)</h1>
+  <!-- <p><%= image_tag "red-panda.jpg", class:"panda" %></p> -->
+</div>
+
+
+<!-- <img src="/images/red-panda.jpg"> -->
+<div class="container">
+  <table class="table table-striped">
+<% @questions.each do |question| %>
+    <tr>
+      <td>
+        <%= link_to question.title, question_path(question) %>
+      </td>
+    </tr>
+<% end %>
+  </table>
+</div>

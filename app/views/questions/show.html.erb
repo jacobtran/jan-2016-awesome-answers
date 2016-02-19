@@ -1,0 +1,93 @@
+<!-- question -->
+<div class="container">
+  <h1><%= @question.title %></h1>
+  <div class="col-sm-9 col-xs-12">
+    <p><%= @question.body %></p>
+    <% like = @question.like_for(current_user) %>
+    <% if like %>
+      <%= link_to fa_icon("thumbs-up"), question_like_path(@question, like), method: :delete, class: "like-fav-icon"  %>
+    <% else %>
+      <%= link_to fa_icon("thumbs-o-up"), question_likes_path(@question), method: :post, class: "like-fav-icon" %>
+    <% end %>
+    <span class="badge"><%= @question.likes.count %></span>
+
+    <% fav = @question.fav_for(current_user) %>
+    <% if fav %>
+      <%= link_to fa_icon("heart"), question_favourite_path(@question, fav), method: :delete, class: "like-fav-icon" %>
+    <% else %>
+      <%= link_to fa_icon("heart-o"), question_favourites_path(@question), method: :post, class: "like-fav-icon" %>
+    <% end %>
+    <span class="badge"><%= @question.favourites.count %></span>
+    <br><br>
+    <div class="btn-group">
+    <% if can? :edit, @question %>
+      <%= link_to "Edit", edit_question_path(@question), class:"btn btn-default btn-sm" %>
+    <% end %>
+
+    <% if can? :destroy, @question %>
+      <%#  method: :delete asks Rails to send a DELETE request instead of GET which
+          is accomplished using Javascript/jQuery %>
+      <%= link_to "Delete",
+                  question_path(@question),
+                  method: :delete,
+                  data: {confirm: "Are you sure?"},
+                  class:"btn btn-default btn-sm" %>
+    <% end %>
+
+    </div>
+    <hr>
+  </div>
+
+<!-- info box -->
+  <div class="col-md-3 col-sm-6 col-xs-12">
+    <ul class="list-group">
+      <li class="list-group-item">View Count:
+        <span class="badge"><%= @question.view_count %></span>
+      </li>
+      <li class="list-group-item"><%= @question.created_at %></li>
+      <li class="list-group-item">Category: <%= @question.category_name %></li>
+      <li class="list-group-item">Created By: <%= @question.user_full_name %></li>
+    </ul>
+  </div>
+
+<!-- answer -->
+  <div class="container">
+    <%# This is the like object for the `current_user` and `@question` %>
+    <h2>Answers</h2>
+    <p>Create an Answer</p>
+<%# we can use the form after overriding the `url` parameter. The downside to it
+    is that it won't work for `edit` situation. This will only work in `create`
+    situation. So we can't reuse it we decide to implement editing answers.%>
+<%#= form_for @answer, url: question_answers_path(@question) do |f| %>
+<%# end %>
+
+    <%= @answer.errors.full_messages.join(", ") %>
+<%# passing an array to the `form_for` is a better approach for creating nested
+    resources. This approach will work for both new / edit sitatuions. So if
+    @answer is not persisted it will send a POST request to
+    question_answers_path(@question). And if @answer is persisted it will send
+    a PATCH request to question_answer_path(@question, @answer) %>
+    <%= form_for [@question, @answer] do |f| %>
+    <div>
+      <%= f.text_area :body, class:"form-control" %>
+    </div>
+  <%= f.submit nil, class:"btn btn-default" %>
+<% end %>
+
+    <br><br>
+    <table class="table table-striped">
+<% @question.answers.each do |ans| %>
+    <tr>
+      <td>
+  <%= ans.body %> (by: <%= ans.user_full_name %>)
+  <% if can? :destroy, ans %>
+    <%= link_to "Delete", question_answer_path(@question, ans),
+                        method: :delete,
+                        data: {confirm: "Are you sure?"},
+                        class: "btn btn-default btn-xs" %>
+  <% end %>
+      </td>
+    </tr>
+<% end %>
+  </div>
+</div>

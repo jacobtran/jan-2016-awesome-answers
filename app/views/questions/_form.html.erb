@@ -1,0 +1,30 @@
+
+<%= @question.errors.full_messages.join(", ") %>
+<%# form_for takes in an ActiveRecord object as a first arguemnt. Then it looks
+    at the object. If the object is not persisted (not yet saved to the database)
+    The form will automatically use POST for its `method`. It will also automatically
+    use `questions_path` as its action (convention is that the `questions_path`
+    will submit to the `create` action)%>
+<%# if @question is persisted then the form will send PATCH request by adding
+    a hidden field with name _method and value `patch`. The action url will be
+    question_path(@question) (by convention). The form will prepopulate the
+    fields with existing values for `@question` %>
+<%= form_for @question do |f| %>
+  <%# we call `f` the form object %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title, class:"form-control" %>
+  </div>
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body, class:"form-control" %>
+  </div>
+  <div>
+    <%= f.label :category_id %>
+    <%= f.collection_select(:category_id, Category.order(:name), :id, :name, {}, {class:"form-control"}) %>
+  </div>
+  <div>
+    <%= f.submit nil, class:"btn btn-default" %>
+  </div>
+
+<% end %>

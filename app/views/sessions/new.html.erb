@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Sign In</h1>
+
+  <%= form_tag sessions_path do %>
+    <div>
+      <!-- label_tag 'name', nil, class: 'small_label' -->
+      <%= label_tag :email %>
+      <%= email_field_tag :email, nil, class:"form-control" %>
+    </div>
+    <div>
+      <%= label_tag :password %>
+      <%= password_field_tag :password, nil, class:"form-control" %>
+    </div>
+    <%= submit_tag nil, class:"btn btn-default" %>
+  <% end %>
+</div>

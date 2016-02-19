@@ -1,0 +1,13 @@
+<div class="container">
+<h1>New Question</h1>
+
+<%# this will look for a partial named "_form" within the same folder as
+    this template (new.html.erb). The partial will have access to the instance
+    varibles that this template has access to. You pass local variables by
+    passing a Hash to the partial as in:
+    = render "form", my_var: my_variable
+    so inside the _form partial you will have a local varible defined called
+    `my_var`
+    %>
+<%= render "form" %>
+</div>
